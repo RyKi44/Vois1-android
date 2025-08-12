@@ -1,0 +1,18 @@
+      - name: Sanity check – où est le dossier android ?
+        run: |
+          ls -la
+          echo "------"
+          ls -la android || true
+
+      - name: Generate Gradle wrapper (if missing) with official action
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 7.5
+          arguments: wrapper
+          build-root-directory: android
+
+      - name: Make gradlew executable (if present)
+        working-directory: android
+        run: |
+          ls -la
+          test -f gradlew && chmod +x gradlew || (echo "gradlew still missing" && exit 1)
